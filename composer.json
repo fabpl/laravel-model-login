@@ -1,0 +1,45 @@
+{
+    "name": "fabpl/laravel-model-login",
+    "description": "Laravel package to collect login attempt",
+    "keywords": [
+        "laravel",
+        "model",
+        "login",
+        "auth"
+    ],
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Fabrice Planchette",
+        "email": "planchettefabrice@hotmail.com",
+        "homepage": "https://fabpl.github.io",
+        "role": "Developer"
+      }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "illuminate/support": "^8.26"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fabpl\\ModelLogin\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Fabpl\\ModelLogin\\ModelLoginServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

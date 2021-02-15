@@ -35,13 +35,15 @@ class LoginSubscriber
      */
     public function onUserLogin(LoginEvent $event): void
     {
-        Login::create([
-            'user_id' => $event->user->id,
-            'identifier' => $event->credentials['email'] ?? null,
-            'status' => Login::STATUS_SUCCESSFULL,
-            'ip' => $this->request->ip(),
-            'user-agent' => $this->request->userAgent()
-        ]);
+        if (method_exists($event->user, 'logins')) {
+            Login::create([
+                'user_id' => $event->user->id,
+                'guard' => $event->guard,
+                'status' => Login::STATUS_SUCCESSFUL,
+                'ip' => $this->request->ip(),
+                'user-agent' => $this->request->userAgent()
+            ]);
+        }
     }
 
     /**
@@ -49,11 +51,14 @@ class LoginSubscriber
      */
     public function onUserLoginFailed(FailedEvent $event): void
     {
-        Login::create([
-            'identifier' => $event->credentials['email'] ?? null,
-            'status' => Login::STATUS_FAILED,
-            'ip' => $this->request->ip(),
-            'user-agent' => $this->request->userAgent()
-        ]);
+        if ($event->user and method_exists($event->user, 'logins')) {
+            Login::create([
+                'user_id' => $event->user->id,
+                'guard' => $event->guard,
+                'status' => Login::STATUS_FAILED,
+                'ip' => $this->request->ip(),
+                'user-agent' => $this->request->userAgent()
+            ]);
+        }
     }
 }

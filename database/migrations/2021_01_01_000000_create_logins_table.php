@@ -15,8 +15,8 @@ class CreateLoginsTable extends Migration
         Schema::create(config('model-login.table_name', 'logins'), function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('user_id')->nullable();
-            $table->string('identifier')->nullable();
-            $table->enum('status', [Login::STATUS_FAILED, Login::STATUS_SUCCESSFULL]);
+            $table->string('guard');
+            $table->enum('status', [Login::STATUS_FAILED, Login::STATUS_SUCCESSFUL]);
             $table->string('ip')->nullable();
             $table->string('user-agent')->nullable();
             $table->timestamps();

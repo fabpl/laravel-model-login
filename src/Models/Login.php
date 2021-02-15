@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Login extends Model
 {
-    /** @var string  */
-    const STATUS_SUCCESSFULL = 'successful';
+    /** @var string */
+    const STATUS_SUCCESSFUL = 'successful';
 
-    /** @var string  */
+    /** @var string */
     const STATUS_FAILED = 'failed';
 
     /**
@@ -19,7 +19,7 @@ class Login extends Model
      */
     protected $fillable = [
         'user_id',
-        'identifier',
+        'guard',
         'status',
         'ip',
         'user-agent',

@@ -42,7 +42,7 @@ class SubscribersTest extends TestCase
         event(new LoginEvent('web', $this->model, false));
 
         $this->assertEquals(1, Login::count());
-        $this->assertEquals(1, Login::whereStatus(Login::STATUS_SUCCESSFULL)->count());
+        $this->assertEquals(1, Login::whereStatus(Login::STATUS_SUCCESSFUL)->count());
         $this->assertEquals(1, $this->model->logins()->count());
     }
 

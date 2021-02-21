@@ -10,13 +10,7 @@ Install package via composer:
 composer require fabpl/laravel-model-login
 ```
 
-Run install artisan command:
-
-```bash
-php artisan model-login:install
-```
-
-Optionally you can publish `config` files with:
+Optionally you can publish `config` and `mmigrations` files with:
 
 ```bash
 php artisan model-login:publish
@@ -33,7 +27,7 @@ php artisan migrate
 Add the `HasLogins` trait to your user model.
 
 ```php
-use Fabpl\ModelLogin\HasLogins;
+use Fabpl\ModelLogin\Traits\HasLogins;
 
 class User extends Authenticatable
 {
@@ -47,7 +41,23 @@ You can get the logins collections:
 
 ```php
 $userModel->logins;
+$userModel->successful_logins;
+$userModel->failed_logins;
 ```
+
+You can browser logins using `LoginInterface` binding:
+
+```php
+use Fabpl\ModelLogin\Contracts\LoginInterface;
+
+public function index(LoginInterface $login) 
+{
+    $logins = $login->all();
+    
+    //
+}
+```
+
 
 ### Changelog
 

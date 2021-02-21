@@ -2,21 +2,23 @@
 
 namespace Fabpl\ModelLogin\Traits;
 
-use Fabpl\ModelLogin\Models\Login;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Fabpl\ModelLogin\Contracts\LoginInterface;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasLogins
 {
     /**
      * Logins relation.
      *
-     * @return HasMany
+     * @return MorphMany
      */
-    public function logins(): HasMany
+    public function logins(): MorphMany
     {
-        return $this->hasMany(
+        return $this->morphMany(
             config('model-login.model'),
-            'user_id',
+            'model',
+            'model_type',
+            'model_id',
             'id'
         );
     }
@@ -24,28 +26,20 @@ trait HasLogins
     /**
      * Successful Logins relation.
      *
-     * @return HasMany
+     * @return MorphMany
      */
-    public function successful_logins(): HasMany
+    public function successful_logins(): MorphMany
     {
-        return $this->hasMany(
-            config('model-login.model'),
-            'user_id',
-            'id'
-        )->whereStatus(Login::STATUS_SUCCESSFUL);
+        return $this->logins()->whereStatus(LoginInterface::STATUS_SUCCESSFUL);
     }
 
     /**
      * Failed Logins relation.
      *
-     * @return HasMany
+     * @return MorphMany
      */
-    public function failed_logins(): HasMany
+    public function failed_logins(): MorphMany
     {
-        return $this->hasMany(
-            config('model-login.model'),
-            'user_id',
-            'id'
-        )->whereStatus(Login::STATUS_FAILED);
+        return $this->logins()->whereStatus(LoginInterface::STATUS_FAILED);
     }
 }

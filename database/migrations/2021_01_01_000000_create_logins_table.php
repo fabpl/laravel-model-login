@@ -12,13 +12,13 @@ class CreateLoginsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('model-login.table_name', 'logins'), function (Blueprint $table) {
+        Schema::create(config('model-login.table_name'), function (Blueprint $table) {
             $table->increments('id');
-            $table->foreignId('user_id')->nullable();
             $table->string('guard');
+            $table->nullableMorphs('model');
             $table->enum('status', [Login::STATUS_FAILED, Login::STATUS_SUCCESSFUL]);
             $table->string('ip')->nullable();
-            $table->string('user-agent')->nullable();
+            $table->string('user_agent')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateLoginsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('model-login.table_name', 'logins'));
+        Schema::dropIfExists(config('model-login.table_name'));
     }
 }

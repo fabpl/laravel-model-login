@@ -28,6 +28,9 @@ class PublishCommand extends Command
         // Configuration...
         $this->callSilent('vendor:publish', ['--tag' => 'model-login-config']);
 
+        // Migrations
+        $this->callSilent('vendor:publish', ['--tag' => 'model-login-migrations']);
+
         $this->info('Model Login resources published.');
     }
 }

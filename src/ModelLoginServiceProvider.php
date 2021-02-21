@@ -2,8 +2,9 @@
 
 namespace Fabpl\ModelLogin;
 
-use Fabpl\ModelLogin\Console\InstallCommand;
 use Fabpl\ModelLogin\Console\PublishCommand;
+use Fabpl\ModelLogin\Contracts\LoginInterface;
+use Fabpl\ModelLogin\Models\Login;
 use Fabpl\ModelLogin\Subscribers\LoginSubscriber;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,8 @@ class ModelLoginServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerConfig();
+        $this->registerMigrations();
+        $this->registerSingletons();
     }
 
     /**
@@ -36,7 +39,6 @@ class ModelLoginServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                InstallCommand::class,
                 PublishCommand::class,
             ]);
         }
@@ -67,7 +69,7 @@ class ModelLoginServiceProvider extends ServiceProvider
 
             // Migrations...
             $this->publishes([
-                __DIR__ . '/../database/migrations/2021_01_01_000000_create_logins_table.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_logins_table.php'),
+                __DIR__ . '/../database/migrations' => database_path('migrations/'),
             ], 'model-login-migrations');
         }
     }
@@ -80,5 +82,23 @@ class ModelLoginServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/model-login.php', 'model-login');
+    }
+
+    /**
+     * Register database migrations files.
+     */
+    protected function registerMigrations(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        }
+    }
+
+    /**
+     * Register singletons into container.
+     */
+    protected function registerSingletons(): void
+    {
+        $this->app->singleton(LoginInterface::class, Login::class);
     }
 }

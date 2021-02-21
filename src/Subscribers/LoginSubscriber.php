@@ -2,13 +2,18 @@
 
 namespace Fabpl\ModelLogin\Subscribers;
 
-use Fabpl\ModelLogin\Models\Login;
+use Fabpl\ModelLogin\Contracts\LoginInterface;
 use Illuminate\Auth\Events\Failed as FailedEvent;
 use Illuminate\Auth\Events\Login as LoginEvent;
 use Illuminate\Http\Request;
 
 class LoginSubscriber
 {
+    /**
+     * @var LoginInterface
+     */
+    protected $login;
+
     /**
      * @var Request
      */
@@ -17,48 +22,53 @@ class LoginSubscriber
     /**
      * LoginSubscriber constructor.
      *
+     * @param LoginInterface $login
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(LoginInterface $login, Request $request)
     {
+        $this->login = $login;
         $this->request = $request;
     }
 
     public function subscribe($events): void
     {
-        $events->listen(LoginEvent::class, [$this, 'onUserLogin']);
-        $events->listen(FailedEvent::class, [$this, 'onUserLoginFailed']);
+        $events->listen(LoginEvent::class, [$this, 'onLogin']);
+        $events->listen(FailedEvent::class, [$this, 'onFailed']);
     }
 
     /**
      * @param LoginEvent $event
      */
-    public function onUserLogin(LoginEvent $event): void
+    public function onLogin(LoginEvent $event): void
     {
-        if (method_exists($event->user, 'logins')) {
-            Login::create([
-                'user_id' => $event->user->id,
-                'guard' => $event->guard,
-                'status' => Login::STATUS_SUCCESSFUL,
-                'ip' => $this->request->ip(),
-                'user-agent' => $this->request->userAgent()
-            ]);
-        }
+        $this->login->create([
+            'guard' => $event->guard,
+            'model_type' => get_class($event->user),
+            'model_id' => $event->user->id,
+            'status' => LoginInterface::STATUS_SUCCESSFUL,
+            'ip' => $this->request->ip(),
+            'user_agent' => $this->request->userAgent()
+        ]);
     }
 
     /**
      * @param FailedEvent $event
      */
-    public function onUserLoginFailed(FailedEvent $event): void
+    public function onFailed(FailedEvent $event): void
     {
-        if ($event->user and method_exists($event->user, 'logins')) {
-            Login::create([
-                'user_id' => $event->user->id,
-                'guard' => $event->guard,
-                'status' => Login::STATUS_FAILED,
-                'ip' => $this->request->ip(),
-                'user-agent' => $this->request->userAgent()
-            ]);
+        $attributes = [
+            'guard' => $event->guard,
+            'status' => LoginInterface::STATUS_FAILED,
+            'ip' => $this->request->ip(),
+            'user_agent' => $this->request->userAgent()
+        ];
+
+        if ($event->user) {
+            $attributes['model_type'] = get_class($event->user);
+            $attributes['model_id'] = $event->user->id;
         }
+
+        $this->login->create($attributes);
     }
 }

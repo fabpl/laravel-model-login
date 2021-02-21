@@ -44,6 +44,8 @@ class SubscribersTest extends TestCase
         $this->assertEquals(1, Login::count());
         $this->assertEquals(1, Login::whereStatus(Login::STATUS_SUCCESSFUL)->count());
         $this->assertEquals(1, $this->model->logins()->count());
+        $this->assertEquals(1, $this->model->successful_logins()->count());
+        $this->assertEquals(0, $this->model->failed_logins()->count());
     }
 
     /**

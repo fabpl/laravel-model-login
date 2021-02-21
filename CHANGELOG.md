@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0 - 2021-02-21
+
+- refactor service provider
+- make login model morphable
+
 ## 1.0.2 - 2021-02-15
 
 - add guard and remove identifier

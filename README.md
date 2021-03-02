@@ -2,6 +2,8 @@
 
 Simply collect login attempt.
 
+![styleci.io](https://github.styleci.io/repos/338051446/shield)
+
 ## Installation
 
 Install package via composer:

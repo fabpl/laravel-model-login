@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLoginsTable extends Migration
 {
-    /**
-     *
-     */
     public function up(): void
     {
         Schema::create(config('model-login.table_name'), function (Blueprint $table) {
@@ -23,9 +20,6 @@ class CreateLoginsTable extends Migration
         });
     }
 
-    /**
-     *
-     */
     public function down(): void
     {
         Schema::dropIfExists(config('model-login.table_name'));

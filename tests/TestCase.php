@@ -15,13 +15,14 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
      * Define environment setup.
      *
      * @param Application $app
+     *
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -30,9 +31,9 @@ class TestCase extends BaseTestCase
         $app['config']->set('database.default', 'testbench');
 
         $app['config']->set('database.connections.testbench', [
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => '',
+            'prefix'   => '',
         ]);
     }
 
@@ -40,6 +41,7 @@ class TestCase extends BaseTestCase
      * Get package providers.
      *
      * @param Application $app
+     *
      * @return array
      */
     protected function getPackageProviders($app)

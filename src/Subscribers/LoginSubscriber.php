@@ -23,7 +23,7 @@ class LoginSubscriber
      * LoginSubscriber constructor.
      *
      * @param LoginInterface $login
-     * @param Request $request
+     * @param Request        $request
      */
     public function __construct(LoginInterface $login, Request $request)
     {
@@ -43,12 +43,12 @@ class LoginSubscriber
     public function onLogin(LoginEvent $event): void
     {
         $this->login->create([
-            'guard' => $event->guard,
+            'guard'      => $event->guard,
             'model_type' => get_class($event->user),
-            'model_id' => $event->user->id,
-            'status' => LoginInterface::STATUS_SUCCESSFUL,
-            'ip' => $this->request->ip(),
-            'user_agent' => $this->request->userAgent()
+            'model_id'   => $event->user->id,
+            'status'     => LoginInterface::STATUS_SUCCESSFUL,
+            'ip'         => $this->request->ip(),
+            'user_agent' => $this->request->userAgent(),
         ]);
     }
 
@@ -58,10 +58,10 @@ class LoginSubscriber
     public function onFailed(FailedEvent $event): void
     {
         $attributes = [
-            'guard' => $event->guard,
-            'status' => LoginInterface::STATUS_FAILED,
-            'ip' => $this->request->ip(),
-            'user_agent' => $this->request->userAgent()
+            'guard'      => $event->guard,
+            'status'     => LoginInterface::STATUS_FAILED,
+            'ip'         => $this->request->ip(),
+            'user_agent' => $this->request->userAgent(),
         ];
 
         if ($event->user) {

@@ -34,9 +34,6 @@ class SubscribersTest extends TestCase
         $this->model = TestModel::create(['email' => 'test@test.com', 'password' => bcrypt('secret')]);
     }
 
-    /**
-     *
-     */
     public function testSuccessfulTest(): void
     {
         event(new LoginEvent('web', $this->model, false));
@@ -48,9 +45,6 @@ class SubscribersTest extends TestCase
         $this->assertEquals(0, $this->model->failed_logins()->count());
     }
 
-    /**
-     *
-     */
     public function testFailedTest(): void
     {
         event(new FailedEvent('web', $this->model, ['email' => 'test@test.com', 'password' => 'test']));

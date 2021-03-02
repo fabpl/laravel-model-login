@@ -64,12 +64,12 @@ class ModelLoginServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             // Configuration...
             $this->publishes([
-                __DIR__ . '/../config/model-login.php' => config_path('model-login.php'),
+                __DIR__.'/../config/model-login.php' => config_path('model-login.php'),
             ], 'model-login-config');
 
             // Migrations...
             $this->publishes([
-                __DIR__ . '/../database/migrations' => database_path('migrations/'),
+                __DIR__.'/../database/migrations' => database_path('migrations/'),
             ], 'model-login-migrations');
         }
     }
@@ -81,7 +81,7 @@ class ModelLoginServiceProvider extends ServiceProvider
      */
     protected function registerConfig(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/model-login.php', 'model-login');
+        $this->mergeConfigFrom(__DIR__.'/../config/model-login.php', 'model-login');
     }
 
     /**
@@ -90,7 +90,7 @@ class ModelLoginServiceProvider extends ServiceProvider
     protected function registerMigrations(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
 
